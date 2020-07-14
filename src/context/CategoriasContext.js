@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 
 //crea context
 export const CategoriasContext = createContext()
@@ -7,12 +7,24 @@ export const CategoriasContext = createContext()
 const CategoriasProvider = (props) => {
 
     //set state
-    const [hola, setHola] = useState('hello world')
+    const [categorias, setCategorias] = useState([])
+
+    useEffect( () => {
+        
+        const callApi = async ()=>{
+            const url = `https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list`
+            const query = await fetch(url)
+            const result = await query.json()
+            setCategorias(result.drinks)
+        }
+        callApi()
+
+    }, [])
 
     return(
         <CategoriasContext.Provider
             value={{
-                hola
+                categorias
             }}
         >
             {props.children}
