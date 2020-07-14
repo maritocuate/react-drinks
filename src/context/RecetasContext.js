@@ -10,7 +10,7 @@ const RecetasProvider = (props) => {
         categoria: ''
     })
     const {ingrediente, categoria} = query
-    const [recipe, setRecipe] = useState([])
+    const [recipes, setRecipes] = useState([])
 
     useEffect(()=>{
         if(categoria==="" || categoria===undefined) return
@@ -19,14 +19,14 @@ const RecetasProvider = (props) => {
             const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingrediente}&c=${categoria}`
             const result = await axios(url)
 
-            setRecipe(result.data.drinks)
+            setRecipes(result.data.drinks)
         }
         callApi()
 
     }, [query])
 
     return (
-        <RecetasContext.Provider value={{setQuery}}>
+        <RecetasContext.Provider value={{setQuery, recipes}}>
             {props.children}
         </RecetasContext.Provider>
     );
