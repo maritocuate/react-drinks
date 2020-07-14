@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 const Receta = ({receta}) => {
 
-    const {setId} = useContext(ModalContext)
+    const {setId, recipe, setRecipe} = useContext(ModalContext)
 
     const [modalStyle] = useState(getModalStyle);
     const [open, setOpen] = useState(false);
@@ -38,6 +38,19 @@ const Receta = ({receta}) => {
       const handleClose = () => {
         setOpen(false);
       };
+
+    const mostrarIngredientes = recipe => {
+        let ingredientes = [];
+        for(let i = 1; i < 16; i++){
+            if( recipe[`strIngredient${i}`] ) {
+                ingredientes.push(
+                    <li> { recipe[`strIngredient${i}`] }  { recipe[`strMeasure${i}`] }</li>
+                )
+            }
+        }
+
+        return ingredientes;
+    }
 
     return (
         <div className='col-md-4 mb-2'>
@@ -61,7 +74,15 @@ const Receta = ({receta}) => {
                             setId(null)
                         }}>
                         <div style={modalStyle} className={classes.paper}>
-                            <h1>MODAL</h1>
+                            <h2>{ recipe.strDrink }</h2>
+                            <h3 className='mt-4'>Instrucciones</h3>
+                            <p>{recipe.strInstructions}</p>
+                            <img className="img-fluid my-4" src={recipe.strDrinkThumb} />
+
+                            <h3>Ingredientes y cantidades</h3>
+                            <ul>
+                                {mostrarIngredientes(recipe)}
+                            </ul>
                         </div>
                     </Modal>
                 </div>
